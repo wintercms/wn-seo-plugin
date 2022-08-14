@@ -1,0 +1,21 @@
+fields:
+    _title:
+        label: winter.seo::lang.models.meta.label
+        type: section
+        comment: winter.seo::lang.models.meta.instructions
+    image:
+        label: winter.seo::lang.models.meta.image
+        type: mediafinder
+        mode: image
+        span: left
+    title:
+        label: winter.seo::lang.models.meta.title
+        span: right
+    description:
+        label: winter.seo::lang.models.meta.description
+        span: right
+        type: textarea
+        size: tiny
+    nofollow:
+        label: winter.seo::lang.models.meta.nofollow
+        type: switch

@@ -1,0 +1,9 @@
+{# <meta> tags #}
+{% for tagName, tagContent in __SELF__.getMetaTags() %}
+    <meta name="{{ tagName }}" content="{{ tagContent }}" />
+{% endfor %}
+
+{# <link> tags #}
+{% for tagName, tagContent in __SELF__.getLinkTags() %}
+    <link rel="{{ tagName }}" href="{{ tagContent }}" />
+{% endfor %}
