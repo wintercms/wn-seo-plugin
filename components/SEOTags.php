@@ -34,6 +34,53 @@ class SEOTags extends ComponentBase
     }
 
     /**
+     * Processes the meta tags for CMS pages and Winter.Pages static pages
+     */
+    protected function processPageMeta()
+    {
+        // $this['page_title'] = $this->page->title ?? Meta::get('og:title') ?? '';
+        // $this['app_name'] = BrandSetting::get('app_name');
+
+        // Set the cannonical URL
+        if (empty(Link::get('canonical'))) {
+            Link::set('canonical', Url::current());
+        }
+
+        // Parse the meta_image as a media library image
+        if (!empty($this->page->meta_image)) {
+            $this->page->meta_image = MediaLibrary::url($this->page->meta_image);
+        }
+
+        // Handle the nofollow meta property being set
+        if (!empty($this->page->meta_nofollow)) {
+            Link::set('robots', 'nofollow');
+        }
+
+        // Set the meta tags based on the current page if not set
+        $metaMap = [
+            Meta::class => [
+                'og:title' => 'meta_title',
+                'og:description' => 'meta_description',
+                'og:image' => 'meta_image',
+            ],
+            Link::class => [
+                'prev' => 'paginatePrev',
+                'next' => 'paginateNext',
+            ],
+        ];
+        foreach ($metaMap as $class => $map) {
+            foreach ($map as $name => $pageProp) {
+                if (
+                    empty($class::get($name))
+                    && !empty($this->page->{$pageProp})
+                ) {
+                    $class::set($name, $this->page->{$pageProp});
+                }
+            }
+        }
+    }
+
+    /**
      * Processes the og:image Meta tag
      */
     protected function processOgImage(): void
@@ -133,6 +180,7 @@ class SEOTags extends ComponentBase
 
     public function getMetaTags(): array
     {
+        $this->processPageMeta();
         $this->processOgImage();
         $this->processDescription();
         $this->processOgUrl();

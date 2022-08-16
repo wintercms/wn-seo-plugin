@@ -1,0 +1,46 @@
+# ===================================
+#  Settings Field Definitions
+# ===================================
+
+tabs:
+    fields:
+        meta_tags:
+            tab: winter.seo::lang.models.meta.label_plural
+            commentAbove: winter.seo::lang.models.meta.comment
+            type: repeater
+            prompt: winter.seo::lang.models.meta.prompt
+            form:
+                fields:
+                    name:
+                        span: left
+                        required: true
+                        label: winter.seo::lang.models.meta.name
+                    value:
+                        span: right
+                        required: true
+                        label: winter.seo::lang.models.meta.value
+                    description:
+                        span: full
+                        type: textarea
+                        size: tiny
+                        label: winter.seo::lang.models.meta.description
+        link_tags:
+            tab: winter.seo::lang.models.link.label_plural
+            commentAbove: winter.seo::lang.models.link.comment
+            type: repeater
+            prompt: winter.seo::lang.models.link.prompt
+            form:
+                fields:
+                    rel:
+                        span: left
+                        required: true
+                        label: winter.seo::lang.models.link.rel
+                    href:
+                        span: right
+                        required: true
+                        label: winter.seo::lang.models.link.href
+                    description:
+                        span: full
+                        type: textarea
+                        size: tiny
+                        label: winter.seo::lang.models.link.description
