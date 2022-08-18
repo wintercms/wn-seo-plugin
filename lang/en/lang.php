@@ -34,6 +34,14 @@ return [
                 'nofollow' => 'Tell search engines to ignore links in content',
             ],
         ],
+        'settings' => [
+            'humans_txt' => 'humans.txt',
+            'humans_txt_comment' => 'The contents of the /humans.txt file used to identify the people behind the site. See https://humanstxt.org/',
+            'robots_txt' => 'robots.txt',
+            'robots_txt_comment' => 'The contents of the /robots.txt configuration file used by web crawlers',
+            'security_txt' => 'Security Policy',
+            'security_txt_comment' => 'The contents of the security policy for the site, see https://securitytxt.org/',
+        ],
     ],
     'permissions' => [
         'manage_meta' => 'Manage SEO meta tags',

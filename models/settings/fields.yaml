@@ -3,6 +3,12 @@
 # ===================================
 
 tabs:
+    icons:
+        winter.seo::lang.models.meta.label_plural: icon-tag
+        winter.seo::lang.models.link.label_plural: icon-link
+        winter.seo::lang.models.settings.humans_txt: icon-user-group
+        winter.seo::lang.models.settings.robots_txt: icon-robot
+        winter.seo::lang.models.settings.security_txt: icon-lock
     fields:
         meta_tags:
             tab: winter.seo::lang.models.meta.label_plural
@@ -44,3 +50,18 @@ tabs:
                         type: textarea
                         size: tiny
                         label: winter.seo::lang.models.link.description
+        humans_txt:
+            tab: winter.seo::lang.models.settings.humans_txt
+            commentAbove: winter.seo::lang.models.settings.humans_txt_comment
+            type: textarea
+            size: small
+        robots_txt:
+            tab: winter.seo::lang.models.settings.robots_txt
+            commentAbove: winter.seo::lang.models.settings.robots_txt_comment
+            type: textarea
+            size: small
+        security_txt:
+            tab: winter.seo::lang.models.settings.security_txt
+            commentAbove: winter.seo::lang.models.settings.security_txt_comment
+            type: textarea
+            size: small

@@ -9,6 +9,7 @@ use Backend\Models\BrandSetting;
 use Cms\Classes\ComponentBase;
 use Symfony\Component\Mime\MimeTypes;
 use System\Classes\ImageResizer;
+use System\Classes\MediaLibrary;
 use Winter\SEO\Classes\Meta;
 use Winter\SEO\Classes\Link;
 

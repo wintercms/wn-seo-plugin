@@ -153,8 +153,8 @@ class Plugin extends PluginBase
         // or as late as possible with the empty check preventing it from overriding anything
         // and just being the absolute last fallback possible
         Event::listen('cms.page.beforeDisplay', function ($controller, $page) {
-            $metaTags = Settings::get('meta_tags');
-            $linkTags = Settings::get('link_tags');
+            $metaTags = Settings::get('meta_tags', []);
+            $linkTags = Settings::get('link_tags', []);
 
             foreach ($metaTags as $data) {
                 if (empty($data['name'] || empty($data['value']))) {
