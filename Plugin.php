@@ -106,7 +106,7 @@ class Plugin extends PluginBase
             ],
         ];
 
-        Event::listen('backend.form.extendFields', function (\Backend\Widgets\Form $widget) use ($controllerModels) {
+        Event::listen('backend.form.extendFieldsBefore', function (\Backend\Widgets\Form $widget) use ($controllerModels) {
             if ($widget->isNested) {
                 return;
             }
@@ -127,17 +127,21 @@ class Plugin extends PluginBase
                 $prefix = "viewBag[meta_";
             }
 
-            $widget->removeField("{$prefix}title]");
-            $widget->removeField("{$prefix}description]");
+            unset($widget->tabs['fields']["{$prefix}title]"]);
+            unset($widget->tabs['fields']["{$prefix}description]"]);
 
             $form = Yaml::parseFile(plugins_path('winter/seo/models/meta/fields.yaml'));
+            $tab = 'winter.seo::lang.models.meta.label';
             $halcyonFields = [];
             foreach ($form['fields'] as $name => $config) {
-                $config['tab'] = 'winter.seo::lang.models.meta.label';
+                $config['tab'] = $tab;
                 $halcyonFields["{$prefix}{$name}]"] = $config;
             }
 
-            $widget->addTabFields($halcyonFields);
+            $widget->tabs['paneCssClass'][$tab] = 'padded-pane';
+            $widget->tabs['icons'][$tab] = 'icon-magnifying-glass';
+
+            $widget->tabs['fields'] = array_merge($widget->tabs['fields'], $halcyonFields);
         });
     }
 
