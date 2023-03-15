@@ -89,6 +89,7 @@ class Plugin extends PluginBase
     public function boot(): void
     {
         $this->extendPagesForms();
+        $this->extendWinterBlogPlugin();
         $this->populateGlobalTags();
     }
 
@@ -178,7 +179,53 @@ class Plugin extends PluginBase
                 }
             }
         });
+    }
 
+    /**
+     * Extends the Winter.Blog plugin with support for SEO form fields
+     * @TODO: Replace with a more generic approach that can be enabled / disabled / configured via config file
+     */
+    protected function extendWinterBlogPlugin(): void
+    {
+        $controllerModels = [
+            \Winter\Blog\Controllers\Posts::class => [
+                \Winter\Blog\Models\Post::class,
+            ],
+            \Winter\Blog\Controllers\Categories::class => [
+                \Winter\Blog\Models\Category::class,
+            ],
+        ];
+
+        Event::listen('backend.form.extendFieldsBefore', function (\Backend\Widgets\Form $widget) use ($controllerModels) {
+            if ($widget->isNested) {
+                return;
+            }
+
+            $controller = $widget->getController();
+            $model = $widget->model;
+
+            if (
+                !isset($controllerModels[get_class($controller)])
+                || !in_array(get_class($model), $controllerModels[get_class($controller)])
+            ) {
+                return;
+            }
+
+            $prefix = 'metadata[seo][';
+
+            $form = Yaml::parseFile(plugins_path('winter/seo/models/meta/fields.yaml'));
+            $tab = 'winter.seo::lang.models.meta.label';
+            $halcyonFields = [];
+            foreach ($form['fields'] as $name => $config) {
+                $config['tab'] = $tab;
+                $halcyonFields["{$prefix}{$name}]"] = $config;
+            }
+
+            $widget->secondaryTabs['paneCssClass'][$tab] = 'padded-pane';
+            $widget->secondaryTabs['icons'][$tab] = 'icon-magnifying-glass';
+
+            $widget->secondaryTabs['fields'] = array_merge($widget->secondaryTabs['fields'], $halcyonFields);
+        });
     }
 
     /**
