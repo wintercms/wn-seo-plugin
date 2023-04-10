@@ -38,11 +38,13 @@ class SEOTags extends ComponentBase
     /**
      * Processes the meta tags for CMS pages and Winter.Pages static pages
      */
-    protected function processPageMeta()
+    protected function processPageMeta(object $page = null)
     {
 
         // Store page settings in order to substitute with model settings if needed
-        $page = (object) $this->page->settings;
+        if(!$page) {
+          $page = (object) $this->page->settings;
+        }
 
         // Handle global settings
         if(Settings::get('global_enable') == 1) {
@@ -222,10 +224,29 @@ class SEOTags extends ComponentBase
       }
     }
 
+    /**
+     * Processes external model's metadata by calling it from controller
+     */
+    public function useMetadataModel(\Model $model): void 
+    {
+      // Im not sure about try/catch, but just logging seems to be not bad option 
+      try {
+        $metadataField = strlen(trim($model->metadata_from)) ? $model->metadata_from : 'metadata';
+        $metadata = $model->{$metadataField};
+        if(!is_array($metadata)) {
+          $metadata = json_decode($metadata, true);
+        }
+        if(!isset($metadata['seo']) || empty($metadata['seo'])) {
+          return;
+        }
+        $this->processPageMeta((object)$metadata['seo']);
+      } catch(Exception $e) {
+        Log::error($e->getMessage());
+      }
+    }
+
     public function getMetaTags(): array
     {
-        // TODO 
-        // Settings::global_minify_html
         $this->processFavicon();
         $this->processPageMeta();
         $this->processOgImage();
