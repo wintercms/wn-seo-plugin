@@ -12,6 +12,7 @@ use System\Classes\ImageResizer;
 use System\Classes\MediaLibrary;
 use Winter\SEO\Classes\Meta;
 use Winter\SEO\Classes\Link;
+use Winter\SEO\Models\Settings;
 
 class SEOTags extends ComponentBase
 {
@@ -21,8 +22,8 @@ class SEOTags extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'SEOTags Component',
-            'description' => 'No description provided yet...'
+            'name'        => 'SEOTags',
+            'description' => 'Outputs specified tags to the page'
         ];
     }
 
@@ -39,8 +40,42 @@ class SEOTags extends ComponentBase
      */
     protected function processPageMeta()
     {
-        // $this['page_title'] = $this->page->title ?? Meta::get('og:title') ?? '';
-        // $this['app_name'] = BrandSetting::get('app_name');
+
+        // Store page settings in order to substitute with model settings if needed
+        $page = (object) $this->page->settings;
+
+        // Handle global settings
+        if(Settings::get('global_enable') == 1) {
+            $name = Settings::get('global_app_name');
+            $position = Settings::get('global_app_name_pos');
+            $separator = Settings::get('global_separator');
+
+            // Substitute empty title by global setting
+            if(empty(trim($page->meta_title))) {
+                $page->meta_title = Settings::get('global_app_title');
+            }
+
+            // Substitute empty description by global setting
+            if(empty(trim($page->meta_description))) {
+                $page->meta_description = Settings::get('global_app_description');
+            }
+
+            if(empty($name)) {
+              // Skip or do something about that?  
+            } else if($position === 'prefix') {
+              $page->meta_title = "{$name} {$separator} {$page->meta_title}";
+            } elseif($position === 'suffix') {
+              $page->meta_title = "{$page->meta_title} {$separator} {$name}";
+            }
+        }
+
+        // Set the page title 
+        // No need to check empty since `tag missing or empty` has same effects for audit
+        Meta::set('title', $page->meta_title);
+
+        // Set the page descriptioe 
+        // No need to check empty since `tag missing or empty` has same effects for audit
+        Meta::set('description', $page->meta_description);
 
         // Set the cannonical URL
         if (empty(Link::get('canonical'))) {
@@ -48,12 +83,12 @@ class SEOTags extends ComponentBase
         }
 
         // Parse the meta_image as a media library image
-        if (!empty($this->page->meta_image)) {
-            $this->page->meta_image = MediaLibrary::url($this->page->meta_image);
+        if (!empty($page->meta_image)) {
+            $page->meta_image = MediaLibrary::url($page->meta_image);
         }
 
         // Handle the nofollow meta property being set
-        if (!empty($this->page->meta_nofollow)) {
+        if (!empty($page->meta_nofollow)) {
             Link::set('robots', 'nofollow');
         }
 
@@ -69,13 +104,11 @@ class SEOTags extends ComponentBase
                 'next' => 'paginateNext',
             ],
         ];
+
         foreach ($metaMap as $class => $map) {
             foreach ($map as $name => $pageProp) {
-                if (
-                    empty($class::get($name))
-                    && !empty($this->page->{$pageProp})
-                ) {
-                    $class::set($name, $this->page->{$pageProp});
+                if (empty($class::get($name)) && !empty($page->{$pageProp})) {
+                    $class::set($name, $page->{$pageProp});
                 }
             }
         }
@@ -138,14 +171,12 @@ class SEOTags extends ComponentBase
     }
 
     /**
-     * Processes the og:description / description meta tags
+     * Processes the og:description meta tags
      */
-    protected function processDescription(): void
+    protected function processOgDescription(): void
     {
         if (!empty(Meta::get('description')) && empty(Meta::get('og:description'))) {
             Meta::set('og:description', Meta::get('description'));
-        } elseif (!empty(Meta::get('og:description')) && empty(Meta::get('description'))) {
-            Meta::set('description', Meta::get('og:description'));
         }
     }
 
@@ -179,11 +210,24 @@ class SEOTags extends ComponentBase
         }
     }
 
+    /**
+     * Processes the icon link tag if favicon enabled
+     */
+    protected function processFavicon(): void 
+    {
+      if(Settings::get('enable_favicon') == 1) {
+        Link::set('icon', '/favicon.ico');
+      }
+    }
+
     public function getMetaTags(): array
     {
+        // TODO 
+        // Settings::global_minify_html
+        $this->processFavicon();
         $this->processPageMeta();
         $this->processOgImage();
-        $this->processDescription();
+        $this->processOgDescription();
         $this->processOgUrl();
         $this->processOgType();
         $this->processOgSiteName();
@@ -196,13 +240,13 @@ class SEOTags extends ComponentBase
         return Link::all();
     }
 
-        // dd(Meta::all(), Link::all(), __LINE__, __FILE__);
+// dd(Meta::all(), Link::all(), __LINE__, __FILE__);
 
 
-        // Meta::set('og:title', $meta['title']);
-        // Meta::set('og:description', $meta['description']);
-        // Meta::set('og:image', \System\Classes\MediaLibrary::url($meta['image']));
-        // Link::set('canonical', $meta['canonical_url']);
+// Meta::set('og:title', $meta['title']);
+// Meta::set('og:description', $meta['description']);
+// Meta::set('og:image', \System\Classes\MediaLibrary::url($meta['image']));
+// Link::set('canonical', $meta['canonical_url']);
 
 
 // {# Pagination Links #}
