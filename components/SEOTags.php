@@ -70,12 +70,14 @@ class SEOTags extends ComponentBase
         }
 
         // Set the page title 
-        // No need to check empty since `tag missing or empty` has same effects for audit
-        Meta::set('title', $page->meta_title);
+        if(empty(trim(Meta::get('title')))) {
+          Meta::set('title', $page->meta_title);
+        }
 
         // Set the page descriptioe 
-        // No need to check empty since `tag missing or empty` has same effects for audit
-        Meta::set('description', $page->meta_description);
+        if(empty(trim(Meta::get('description')))) {
+          Meta::set('description', $page->meta_description);
+        }
 
         // Set the cannonical URL
         if (empty(Link::get('canonical'))) {
