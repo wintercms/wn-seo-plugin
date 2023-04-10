@@ -1,8 +1,8 @@
 {
-    "name": "winter/wn-seo-plugin",
+    "name": "8black/wn-seo-plugin",
     "type": "winter-plugin",
     "description": "Winter CMS plugin for managing SEO tags",
-    "homepage": "https://github.com/wintercms/wn-seo-plugin",
+    "homepage": "https://github.com/8blvck/wn-seo-plugin",
     "keywords": ["cms", "wintercms", "seo"],
     "license": "MIT",
     "authors": [
@@ -24,5 +24,8 @@
     "require": {
         "php": ">=7.2",
         "composer/installers": "~1.11"
+    },
+    "extra": {
+        "installer-name": "seo"
     }
 }
