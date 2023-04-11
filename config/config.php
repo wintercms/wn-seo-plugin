@@ -37,3 +37,4 @@ return [
     
     'global_app_description' => null,
 ];
+

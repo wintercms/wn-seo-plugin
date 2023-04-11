@@ -1,4 +1,5 @@
 <?php
+
 use Winter\SEO\Models\Settings;
 use Winter\Storm\Database\Attach\Resizer;
 use Cms\Classes\CmsController;
