@@ -182,9 +182,9 @@ class SEOTags extends ComponentBase
     }
 
     /**
-     * Processes the og:description meta tags
+     * Processes the og:description / description meta tags
      */
-    protected function processOgDescription(): void
+    protected function processDescription(): void
     {
         if (!empty(Meta::get('description')) && empty(Meta::get('og:description'))) {
             Meta::set('og:description', Meta::get('description'));
@@ -259,7 +259,7 @@ class SEOTags extends ComponentBase
         $this->processFavicon();
         $this->processPageMeta();
         $this->processOgImage();
-        $this->processOgDescription();
+        $this->processDescription();
         $this->processOgUrl();
         $this->processOgType();
         $this->processOgSiteName();

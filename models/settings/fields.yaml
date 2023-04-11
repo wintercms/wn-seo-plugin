@@ -17,7 +17,7 @@ tabs:
             label: 'Enable global meta tags (not overrides page settings)'
             span: auto
             type: switch
-            default: 1
+            default: 0
         global_minify_html:
             tab: 'Global'
             label: 'Minify HTML (whitespaces and comments will be removed)'
@@ -119,7 +119,7 @@ tabs:
             label: 'Enable icons'
             span: full
             type: switch
-            default: 1
+            default: 0
         favicon:
             tab: 'Favicon'
             commentAbove: 'Global favicon'

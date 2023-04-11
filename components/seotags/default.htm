@@ -1,13 +1,13 @@
 {# <meta> tags #}
 {% for tagName, tagContent in __SELF__.getMetaTags() %}
-  {% if tagName == 'title' %}
-  <title>{{ tagContent }}</title>
-  {% else %}
-  <meta name="{{ tagName }}" property="{{ tagName }}" content="{{ tagContent }}" />
-  {% endif %}
+    {% if tagName == 'title' %}
+        <title>{{ tagContent }}</title>
+    {% else %}
+        <meta name="{{ tagName }}" property="{{ tagName }}" content="{{ tagContent }}" />
+    {% endif %}
 {% endfor %}
 
 {# <link> tags #}
 {% for tagName, tagContent in __SELF__.getLinkTags() %}
-  <link rel="{{ tagName }}" href="{{ tagContent }}" />
+    <link rel="{{ tagName }}" href="{{ tagContent }}" />
 {% endfor %}

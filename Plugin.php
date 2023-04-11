@@ -223,7 +223,7 @@ class Plugin extends PluginBase
             $fields = [];
             foreach ($form['fields'] as $name => $config) {
               $config['tab'] = $tab;
-              $fields["{$metadataField}[seo][{meta_$name}]"] = $config;
+              $fields["{$metadataField}[seo][meta_{$name}]"] = $config;
             }
             $tabs['paneCssClass'][$tab] = 'padded-pane';
             $tabs['icons'][$tab] = 'icon-magnifying-glass';

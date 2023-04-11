@@ -25,7 +25,7 @@ return [
 
     'global_enable_tags' => false,
     
-    'global_minify_html' => true,
+    'global_minify_html' => false,
     
     'global_app_name' => null,
     
