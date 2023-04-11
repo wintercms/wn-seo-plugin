@@ -74,12 +74,12 @@ class SEOTags extends ComponentBase
         }
 
         // Set the page title 
-        if(empty(trim(Meta::get('title')))) {
+        if(!empty($page->meta_title) && empty(trim(Meta::get('title')))) {
           Meta::set('title', $page->meta_title);
         }
 
-        // Set the page descriptioe 
-        if(empty(trim(Meta::get('description')))) {
+        // Set the page description 
+        if(!empty($page->meta_description) && empty(trim(Meta::get('description')))) {
           Meta::set('description', $page->meta_description);
         }
 
