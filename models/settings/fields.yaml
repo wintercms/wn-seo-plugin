@@ -20,7 +20,7 @@ tabs:
             default: 1
         global_minify_html:
             tab: 'Global'
-            label: 'Minify HTML automatically'
+            label: 'Minify HTML (whitespaces and comments will be removed)'
             span: auto
             type: switch
             default: 0

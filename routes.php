@@ -1,8 +1,14 @@
 <?php
-
 use Winter\SEO\Models\Settings;
 use Winter\Storm\Database\Attach\Resizer;
+use Cms\Classes\CmsController;
 use File as FileManager;
+
+CmsController::extend(function($controller) {
+  if(Settings::get('global_minify_html') == 1) {
+    $controller->middleware('Winter\SEO\Middleware\CompressHTML');
+  }
+});
 
 Event::listen('backend.page.beforeDisplay', function($controller, $action, $params) {
     $controller->addJs('/plugins/winter/seo/assets/counter.js');
