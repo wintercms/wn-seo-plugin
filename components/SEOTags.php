@@ -23,7 +23,7 @@ class SEOTags extends ComponentBase
     {
         return [
             'name'        => 'SEOTags',
-            'description' => 'Outputs specified tags to the page'
+            'description' => 'Outputs meta tags to the page'
         ];
     }
 
@@ -40,6 +40,8 @@ class SEOTags extends ComponentBase
      */
     protected function processPageMeta(object $page = null)
     {
+        // $this['page_title'] = $this->page->title ?? Meta::get('og:title') ?? '';
+        // $this['app_name'] = BrandSetting::get('app_name');
 
         // Store page settings in order to substitute with model settings if needed
         if(!$page) {
@@ -111,8 +113,11 @@ class SEOTags extends ComponentBase
 
         foreach ($metaMap as $class => $map) {
             foreach ($map as $name => $pageProp) {
-                if (empty($class::get($name)) && !empty($page->{$pageProp})) {
-                    $class::set($name, $page->{$pageProp});
+                if (
+                    empty($class::get($name))
+                    && !empty($this->page->{$pageProp})
+                ) {
+                    $class::set($name, $this->page->{$pageProp});
                 }
             }
         }
@@ -181,6 +186,8 @@ class SEOTags extends ComponentBase
     {
         if (!empty(Meta::get('description')) && empty(Meta::get('og:description'))) {
             Meta::set('og:description', Meta::get('description'));
+        } elseif (!empty(Meta::get('og:description')) && empty(Meta::get('description'))) {
+            Meta::set('description', Meta::get('og:description'));
         }
     }
 
@@ -263,13 +270,13 @@ class SEOTags extends ComponentBase
         return Link::all();
     }
 
-// dd(Meta::all(), Link::all(), __LINE__, __FILE__);
+        // dd(Meta::all(), Link::all(), __LINE__, __FILE__);
 
 
-// Meta::set('og:title', $meta['title']);
-// Meta::set('og:description', $meta['description']);
-// Meta::set('og:image', \System\Classes\MediaLibrary::url($meta['image']));
-// Link::set('canonical', $meta['canonical_url']);
+        // Meta::set('og:title', $meta['title']);
+        // Meta::set('og:description', $meta['description']);
+        // Meta::set('og:image', \System\Classes\MediaLibrary::url($meta['image']));
+        // Link::set('canonical', $meta['canonical_url']);
 
 
 // {# Pagination Links #}

@@ -1,16 +1,5 @@
 # SEO Plugin
 
-### Installation
-#### Before installation add this to your `composer.json` so plugin will act like original one
-```json
-"extra": {
-    "installer-paths": {
-        "./plugins/winter/{$name}/": ["8black/wn-seo-plugin", "8black/seo"]
-    }
-}
-```
-#### Run `composer require 8black/wn-seo-plugin`
-
 WIP plugin for managing SEO content in Winter CMS. Inspired by https://github.com/bennothommo/wn-meta-plugin.
 
 Future plans including support for easily generating structured data and automatically attaching SEO meta fields to CMS pages, Winter.Pages pages, & generically to any Winter CMS model.
