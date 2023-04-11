@@ -99,11 +99,11 @@ class Plugin extends PluginBase
     protected function extendPagesForms()
     {
         $controllerModels = [
-            \Cms\Controllers\Index::class => [ 
-                \Cms\Classes\Page::class 
+            \Cms\Controllers\Index::class => [
+                \Cms\Classes\Page::class,
             ],
-            \Winter\Pages\Controllers\Index::class => [ 
-                \Winter\Pages\Classes\Page::class 
+            \Winter\Pages\Controllers\Index::class => [
+                \Winter\Pages\Classes\Page::class,
             ],
         ];
 
