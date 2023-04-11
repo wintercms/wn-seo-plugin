@@ -47,8 +47,6 @@ class SEOTags extends ComponentBase
         if(!$page) {
           $page = (object) $this->page->settings;
         }
-
-        dd($this->page->settings);
         
         // Handle global settings
         if(Settings::getOrDefault('global_enable_tags')) {
