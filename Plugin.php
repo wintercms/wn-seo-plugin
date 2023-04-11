@@ -187,8 +187,6 @@ class Plugin extends PluginBase
      */
     protected function extendExternalPlugins(): void
     {
-        // TODO
-        // Maybe move metadata field to single pivot table like [id, model, model_id, metadata]
         $controllerModels = [
             \Winter\Blog\Controllers\Posts::class => [
                 \Winter\Blog\Models\Post::class,
@@ -225,7 +223,7 @@ class Plugin extends PluginBase
             $fields = [];
             foreach ($form['fields'] as $name => $config) {
               $config['tab'] = $tab;
-              $fields["{$metadataField}[seo][{$name}]"] = $config;
+              $fields["{$metadataField}[seo][{meta_$name}]"] = $config;
             }
             $tabs['paneCssClass'][$tab] = 'padded-pane';
             $tabs['icons'][$tab] = 'icon-magnifying-glass';

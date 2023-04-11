@@ -5,7 +5,7 @@ use Cms\Classes\CmsController;
 use File as FileManager;
 
 CmsController::extend(function($controller) {
-  if(Settings::get('global_minify_html') == 1) {
+  if(Settings::getOrDefault('global_minify_html')) {
     $controller->middleware('Winter\SEO\Middleware\CompressHTML');
   }
 });
@@ -27,7 +27,7 @@ Event::listen('system.beforeRoute', function () {
         return Response::make($contents, 200, ['Content-Type' => 'text/plain']);
     };
 
-    if(Settings::get('enable_favicon') == 1) {
+    if(Settings::getOrDefault('enable_favicon')) {
         Route::get('favicon.ico', function() use ($notFoundError) {
             $favicon = Settings::get('favicon');
             $faviconPath = base_path().media_path($favicon);
@@ -45,13 +45,13 @@ Event::listen('system.beforeRoute', function () {
             return response()->file($outputPath, [ 'Content-Type'=> 'image/x-icon' ]);
         });      
     }
-    if(Settings::get('enable_humans_txt') == 1) {
+    if(Settings::getOrDefault('enable_humans_txt')) {
         Route::get('/humans.txt', fn() => $txtResponse('humans_txt'));
     }
-    if(Settings::get('enable_robots_txt') == 1) {
+    if(Settings::getOrDefault('enable_robots_txt')) {
         Route::get('/robots.txt', fn() => $txtResponse('robots_txt'));
     }
-    if(Settings::get('enable_security_txt') == 1) {
+    if(Settings::getOrDefault('enable_security_txt')) {
         Route::get('/security.txt', fn() => $txtResponse('security_txt'));
         Route::get('/.well-known/security.txt', fn() => $txtResponse('security_txt'));
     }

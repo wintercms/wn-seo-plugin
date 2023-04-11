@@ -48,20 +48,22 @@ class SEOTags extends ComponentBase
           $page = (object) $this->page->settings;
         }
 
+        dd($this->page->settings);
+        
         // Handle global settings
-        if(Settings::get('global_enable') == 1) {
-            $name = Settings::get('global_app_name');
-            $position = Settings::get('global_app_name_pos');
-            $separator = Settings::get('global_separator');
+        if(Settings::getOrDefault('global_enable_tags')) {
+            $name = Settings::getOrDefault('global_app_name');
+            $position = Settings::getOrDefault('global_app_name_pos');
+            $separator = Settings::getOrDefault('global_separator');
 
             // Substitute empty title by global setting
             if(empty(trim($page->meta_title))) {
-                $page->meta_title = Settings::get('global_app_title');
+                $page->meta_title = Settings::getOrDefault('global_app_title');
             }
 
             // Substitute empty description by global setting
             if(empty(trim($page->meta_description))) {
-                $page->meta_description = Settings::get('global_app_description');
+                $page->meta_description = Settings::getOrDefault('global_app_description');
             }
 
             if(empty($name)) {
@@ -226,7 +228,7 @@ class SEOTags extends ComponentBase
      */
     protected function processFavicon(): void 
     {
-      if(Settings::get('enable_favicon') == 1) {
+      if(Settings::getOrDefault('enable_favicon')) {
         Link::set('icon', '/favicon.ico');
       }
     }

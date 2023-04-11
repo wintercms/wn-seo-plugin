@@ -12,7 +12,7 @@ tabs:
         winter.seo::lang.models.settings.robots_txt: icon-robot
         winter.seo::lang.models.settings.security_txt: icon-lock
     fields:
-        global_enable:
+        global_enable_tags:
             tab: 'Global'
             label: 'Enable global meta tags (not overrides page settings)'
             span: auto

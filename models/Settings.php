@@ -52,4 +52,9 @@ class Settings extends Model
         $this->robots_txt = $contentsFromConfig('robots_txt');
         $this->security_txt = $contentsFromConfig('security_txt');
     }
+
+    public static function getOrDefault($prop) {
+        return self::get($prop, Config::get("winter.seo::{$prop}", null));
+    }
+
 }
