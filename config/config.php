@@ -23,7 +23,7 @@ return [
         'enabled' => false,
     ],
 
-    'blobal' => [
+    'global' => [
     
         'enable_tags' => false,
         
