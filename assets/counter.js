@@ -58,4 +58,3 @@
         el.oninput = event => counter.seo.charCountHandler(el);
     });
 })(window, document);
-
