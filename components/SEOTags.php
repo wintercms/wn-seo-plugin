@@ -44,24 +44,24 @@ class SEOTags extends ComponentBase
         // $this['app_name'] = BrandSetting::get('app_name');
 
         // Store page settings in order to substitute with model settings if needed
-        if(!$page) {
-          $page = (object) $this->page->settings;
+        if (!$page) {
+            $page = $this->page;
         }
-        
+
         // Handle global settings
-        if(Settings::getOrDefault('global_enable_tags')) {
-            $name = Settings::getOrDefault('global_app_name');
-            $position = Settings::getOrDefault('global_app_name_pos');
-            $separator = Settings::getOrDefault('global_separator');
+        if (Settings::getOrDefault('global.enable_tags')) {
+            $name = Settings::getOrDefault('global.app_name');
+            $position = Settings::getOrDefault('global.app_name_pos');
+            $separator = Settings::getOrDefault('global.separator');
 
             // Substitute empty title by global setting
             if(empty(trim($page->meta_title))) {
-                $page->meta_title = Settings::getOrDefault('global_app_title');
+                $page->meta_title = Settings::getOrDefault('global.app_title');
             }
 
             // Substitute empty description by global setting
             if(empty(trim($page->meta_description))) {
-                $page->meta_description = Settings::getOrDefault('global_app_description');
+                $page->meta_description = Settings::getOrDefault('global.app_description');
             }
 
             if(empty($name)) {
@@ -74,12 +74,12 @@ class SEOTags extends ComponentBase
         }
 
         // Set the page title 
-        if(!empty($page->meta_title) && empty(trim(Meta::get('title')))) {
+        if (!empty($page->meta_title) && empty(trim(Meta::get('title')))) {
           Meta::set('title', $page->meta_title);
         }
 
         // Set the page description 
-        if(!empty($page->meta_description) && empty(trim(Meta::get('description')))) {
+        if (!empty($page->meta_description) && empty(trim(Meta::get('description')))) {
           Meta::set('description', $page->meta_description);
         }
 
@@ -226,7 +226,7 @@ class SEOTags extends ComponentBase
      */
     protected function processFavicon(): void 
     {
-      if(Settings::getOrDefault('enable_favicon')) {
+      if(Settings::getOrDefault('enable_favicon.enabled')) {
         Link::set('icon', '/favicon.ico');
       }
     }

@@ -12,19 +12,19 @@ tabs:
         winter.seo::lang.models.settings.robots_txt: icon-robot
         winter.seo::lang.models.settings.security_txt: icon-lock
     fields:
-        global_enable_tags:
+        global.enable_tags:
             tab: 'Global'
             label: 'Enable global meta tags (not overrides page settings)'
             span: auto
             type: switch
             default: 0
-        global_minify_html:
+        global.minify_html:
             tab: 'Global'
             label: 'Minify HTML (whitespaces and comments will be removed)'
             span: auto
             type: switch
             default: 0
-        global_app_name:
+        global.app_name:
             tab: 'Global'
             label: 'App name'
             span: auto
@@ -32,7 +32,7 @@ tabs:
             type: text
             default: ''
             comment: 'App name can be visible in the title meta tag'
-        global_separator:
+        global.separator:
             tab: 'Global'
             label: 'App name separator'
             span: auto
@@ -40,7 +40,7 @@ tabs:
             type: text
             default: '|'
             comment: 'Sybmol to separate title from app name: {app name} {sepratator} {title}'
-        global_app_name_pos:
+        global.app_name_pos:
             tab: 'Global'
             label: 'Select how the app name should appear in the title'
             options:
@@ -49,9 +49,9 @@ tabs:
                 suffix: 'Suffix'
             span: auto
             type: balloon-selector
-        global_app_title:
+        global.app_title:
             tab: 'Global'
-            label: 'App title'
+            label: 'Default meta title'
             size: tiny
             span: full
             placeholder: 'Your app global title'
@@ -61,9 +61,9 @@ tabs:
                 data-counter: 1
                 data-min: 50
                 data-max: 60
-        global_app_description:
+        global.app_description:
             tab: 'Global'
-            label: 'App description'
+            label: 'Default meta desciption'
             size: tiny
             span: full
             placeholder: 'Your app global description'
@@ -114,19 +114,19 @@ tabs:
                         type: textarea
                         size: tiny
                         label: winter.seo::lang.models.link.description
-        enable_favicon:
+        favicon.enabled:
             tab: 'Favicon'
-            label: 'Enable icons'
+            label: 'Enable favicon'
             span: full
             type: switch
             default: 0
-        favicon:
+        favicon.path:
             tab: 'Favicon'
             commentAbove: 'Global favicon'
             type: mediafinder
             mode: image
             span: left
-        enable_humans_txt:
+        humans_txt.enabled:
             tab: winter.seo::lang.models.settings.humans_txt
             label: 'Enable humans.txt'
             span: full
@@ -137,7 +137,7 @@ tabs:
             commentAbove: winter.seo::lang.models.settings.humans_txt_comment
             type: textarea
             size: small
-        enable_robots_txt:
+        robots_txt.enabled:
             tab: winter.seo::lang.models.settings.robots_txt
             label: 'Enable robots.txt'
             span: full
@@ -148,7 +148,7 @@ tabs:
             commentAbove: winter.seo::lang.models.settings.robots_txt_comment
             type: textarea
             size: small
-        enable_security_txt:
+        security_txt.enabled:
             tab: winter.seo::lang.models.settings.security_txt
             label: 'Enable security.txt'
             span: full

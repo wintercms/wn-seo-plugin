@@ -6,7 +6,7 @@ use Cms\Classes\CmsController;
 use File as FileManager;
 
 CmsController::extend(function($controller) {
-  if(Settings::getOrDefault('global_minify_html')) {
+  if(Settings::getOrDefault('global.minify_html')) {
     $controller->middleware('Winter\SEO\Middleware\CompressHTML');
   }
 });
@@ -23,19 +23,19 @@ Event::listen('system.beforeRoute', function () {
         }
         return Response::make($contents, 200, ['Content-Type' => 'text/plain']);
     };
-    if(Settings::getOrDefault('enable_humans_txt')) {
+    if(Settings::getOrDefault('humans_txt.enabled')) {
         Route::get('/humans.txt', fn() => $txtResponse('humans_txt'));
     }
-    if(Settings::getOrDefault('enable_robots_txt')) {
+    if(Settings::getOrDefault('robots_txt.enabled')) {
         Route::get('/robots.txt', fn() => $txtResponse('robots_txt'));
     }
-    if(Settings::getOrDefault('enable_security_txt')) {
+    if(Settings::getOrDefault('security_txt.enabled')) {
         Route::get('/security.txt', fn() => $txtResponse('security_txt'));
         Route::get('/.well-known/security.txt', fn() => $txtResponse('security_txt'));
     }
-    if(Settings::getOrDefault('enable_favicon')) {
+    if(Settings::getOrDefault('favicon.enabled')) {
         Route::get('favicon.ico', function() {
-            $faviconPath = media_path(Settings::get('favicon'));
+            $faviconPath = media_path(Settings::get('favicon.path'));
             try {
                 $favicon = new ImageResizer($faviconPath, 16, 16, ['mode'=>'crop']);
                 $favicon->resize();
