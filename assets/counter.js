@@ -4,18 +4,17 @@
         charCountHandler: function(target) {
             $target = $(target);
             let $helpBlock = $target.next('.help-block');
-            let isTwig = /\{{2}.*\}{2}/.test($target.val());
-            let count = isTwig ? 'unrechable' : $target.val().length;
             let min = $target.data('min');
             let max = $target.data('max');
+            let count = $target.val().replace(/[{}]/g, "").length;
             $helpBlock.html(`Symbols: <b>${count}</b> of ${min} - ${max} optimal`);
             let $number = $helpBlock.find('b');
             if (count < max && count > min) {
                 $number.css({color: 'lime'});
-            } else if (isTwig) {
-                $number.css({color: 'coral'});
+            } else if(count < min) {
+              	$number.css({color: 'darkred'});
             } else {
-                $number.css({color: 'salmon'});
+              	$number.css({color: 'coral'});
             }
         }
     } 
@@ -24,7 +23,7 @@
         MutationObserver = win.MutationObserver || win.WebKitMutationObserver,
         observer;
     
-    function ready(selector, fn) {
+    const ready = (selector, fn) => {
         listeners.push({
             selector: selector,
             fn: fn
@@ -39,7 +38,7 @@
         check();
     }
     
-    function check() {
+    const check = () => {
         for (var i = 0, len = listeners.length, listener, elements; i < len; i++) {
         listener = listeners[i];
         elements = doc.querySelectorAll(listener.selector);
