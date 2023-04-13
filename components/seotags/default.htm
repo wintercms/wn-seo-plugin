@@ -1,10 +1,7 @@
 {# <meta> tags #}
 {% for tagName, tagContent in __SELF__.getMetaTags() %}
-    {% if tagName == 'title' %}
-        <title>{{ tagContent }}</title>
-    {% else %}
-        <meta name="{{ tagName }}" property="{{ tagName }}" content="{{ tagContent }}" />
-    {% endif %}
+    {# TODO: print title tag if not exists in page layout #}
+    <meta name="{{ tagName }}" property="{{ tagName }}" content="{{ tagContent }}" />
 {% endfor %}
 
 {# <link> tags #}
