@@ -2,7 +2,7 @@
 
 return [
     'default_social_image' => null,
-    
+
     'humans_txt' => [
         'path' => base_path('humans.txt'),
         'enabled' => true,
