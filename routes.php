@@ -23,6 +23,7 @@ Event::listen('system.beforeRoute', function () {
         }
         return Response::make($contents, 200, ['Content-Type' => 'text/plain']);
     };
+    $settings = Settings::instance();
     if(Settings::getOrDefault('humans_txt.enabled')) {
         Route::get('/humans.txt', fn() => $txtResponse('humans_txt'));
     }
@@ -33,16 +34,9 @@ Event::listen('system.beforeRoute', function () {
         Route::get('/security.txt', fn() => $txtResponse('security_txt'));
         Route::get('/.well-known/security.txt', fn() => $txtResponse('security_txt'));
     }
-    if(Settings::getOrDefault('favicon.enabled')) {
+    if(Settings::getOrDefault('favicon.enabled') && $settings->app_favicon) {
         Route::get('favicon.ico', function() {
-            $faviconPath = media_path(Settings::get('favicon.path'));
-            try {
-                $favicon = new ImageResizer($faviconPath, 16, 16, ['mode'=>'crop']);
-                $favicon->resize();
-                $outputPath = storage_path('app/'.$favicon->getPathToResizedImage());
-            } catch(Exception $e) {
-                $outputPath = base_path($faviconPath);
-            }
+            $outputPath = $settings->app_favicon->getLocalPath();
             return response()->file($outputPath, [ 'Content-Type'=> 'image/x-icon' ]);
         });      
     }

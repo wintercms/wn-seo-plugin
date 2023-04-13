@@ -73,7 +73,6 @@ tabs:
                 data-counter: 1
                 data-min: 100
                 data-max: 160
-
         meta_tags:
             tab: winter.seo::lang.models.meta.label_plural
             commentAbove: winter.seo::lang.models.meta.comment
@@ -119,13 +118,17 @@ tabs:
             label: 'Enable favicon'
             span: full
             type: switch
-            default: 0
-        favicon.path:
+            default: 1
+        app_favicon:
             tab: 'Favicon'
-            commentAbove: 'Shortcut icon of your app'
-            type: mediafinder
+            label: 'Favicon'
+            comment: 'Shortcut icon of your website'
+            type: fileupload
             mode: image
-            span: left
+            fileTypes: png,gif,svg,ico
+            useCaption: true
+            imageHeight: 32
+            imageWidth: 32
         humans_txt.enabled:
             tab: winter.seo::lang.models.settings.humans_txt
             label: 'Enable humans.txt'

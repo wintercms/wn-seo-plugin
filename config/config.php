@@ -19,7 +19,6 @@ return [
     ],
 
     'favicon' => [
-        'path' => base_path('favicon.ico'),
         'enabled' => false,
     ],
 

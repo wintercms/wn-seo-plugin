@@ -226,7 +226,7 @@ class SEOTags extends ComponentBase
      */
     protected function processFavicon(): void 
     {
-      if(Settings::getOrDefault('enable_favicon.enabled')) {
+      if(Settings::getOrDefault('favicon.enabled') && Settings::instance()->app_favicon) {
         Link::set('icon', '/favicon.ico');
       }
     }

@@ -30,6 +30,10 @@ class Settings extends Model
      */
     public $rules = [];
 
+    public $attachOne = [
+        'app_favicon' => 'System\Models\File'
+    ];
+
     /**
      * Initialize the seed data for this model. This only executes when the
      * model is first created or reset to default.
