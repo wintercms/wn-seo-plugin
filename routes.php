@@ -37,7 +37,7 @@ Event::listen('system.beforeRoute', function () {
     }
     $settings = Settings::instance();
     if(Settings::getOrDefault('favicon.enabled') && $settings->app_favicon) {
-        Route::get('favicon.ico', function() {
+        Route::get('favicon.ico', function() use ($settings) {
             $outputPath = $settings->app_favicon->getLocalPath();
             return response()->file($outputPath, [ 'Content-Type'=> 'image/x-icon' ]);
         });      
