@@ -30,6 +30,9 @@ class Settings extends Model
      */
     public $rules = [];
 
+    /**
+     * @var array One-to-one relations
+     */
     public $attachOne = [
         'app_favicon' => 'System\Models\File'
     ];

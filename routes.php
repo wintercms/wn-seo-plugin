@@ -18,12 +18,13 @@ Event::listen('backend.page.beforeDisplay', function($controller, $action, $para
 Event::listen('system.beforeRoute', function () {
     $txtResponse = function ($key) {
         $contents = Settings::get($key);
+
         if (empty($contents)) {
-          return Response::make((new \Cms\Classes\Controller())->run('404'), 404);
+            return Response::make((new \Cms\Classes\Controller())->run('404'), 404);
         }
+
         return Response::make($contents, 200, ['Content-Type' => 'text/plain']);
     };
-    $settings = Settings::instance();
     if(Settings::getOrDefault('humans_txt.enabled')) {
         Route::get('/humans.txt', fn() => $txtResponse('humans_txt'));
     }
@@ -34,6 +35,7 @@ Event::listen('system.beforeRoute', function () {
         Route::get('/security.txt', fn() => $txtResponse('security_txt'));
         Route::get('/.well-known/security.txt', fn() => $txtResponse('security_txt'));
     }
+    $settings = Settings::instance();
     if(Settings::getOrDefault('favicon.enabled') && $settings->app_favicon) {
         Route::get('favicon.ico', function() {
             $outputPath = $settings->app_favicon->getLocalPath();

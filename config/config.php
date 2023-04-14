@@ -39,4 +39,9 @@ return [
         'app_description' => null,
 
     ],
+
+    'models_to_attach' => [
+        \Winter\Blog\Models\Post::class,
+        \Winter\Blog\Models\Category::class,
+    ],
 ];
