@@ -31,6 +31,13 @@ class Settings extends Model
     public $rules = [];
 
     /**
+     * @var array One-to-one relations
+     */
+    public $attachOne = [
+        'app_favicon' => 'System\Models\File'
+    ];
+
+    /**
      * Initialize the seed data for this model. This only executes when the
      * model is first created or reset to default.
      */
@@ -52,4 +59,9 @@ class Settings extends Model
         $this->robots_txt = $contentsFromConfig('robots_txt');
         $this->security_txt = $contentsFromConfig('security_txt');
     }
+
+    public static function getOrDefault($prop) {
+        return self::get($prop, Config::get("winter.seo::{$prop}", null));
+    }
+
 }
