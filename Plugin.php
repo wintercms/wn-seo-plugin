@@ -31,7 +31,6 @@ use Yaml;
  * - Default addition of generator meta tag in config file
  * - Support for "Social Media" quick connects (FB / Twitter IDs / accounts) (maybe just via global tags)
  * - Support for more sources of og:image (i.e. manual URL, fileupload, mediafinder, etc)
- * - Favicon, webmanifest, browserconfig, apple touch icons, etc
  * - Previews of FB / Twitter / Google
  * - Support for structured data
  * - Winter.Redirect
