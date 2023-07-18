@@ -178,6 +178,8 @@ class Plugin extends PluginBase
             }
         });
 
+        // Add the Winter CMS generator tag
+        Meta::set('generator', 'Winter CMS');
     }
 
     /**
