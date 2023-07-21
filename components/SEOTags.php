@@ -130,7 +130,7 @@ class SEOTags extends ComponentBase
             // Ensure the image alt text is set
             if (empty(Meta::get('og:image:alt'))) {
                 Meta::set('og:image:alt', Lang::get('winter.seo::lang.meta.og:image:alt', [
-                    'title' => Meta::get('og:title') ?? '',
+                    'title' => Meta::get('og:title') ?? Meta::get('title') ?? $this->controller->getPage()['title'] ?? '',
                     'app_name' => BrandSetting::get('app_name'),
                 ]));
             }
