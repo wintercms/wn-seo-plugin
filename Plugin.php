@@ -20,6 +20,14 @@ use Yaml;
  * - Support for creating meta data in separate related model in the SeoableModel behavior
  *     - check for extended with in the form event listener
  *     - Support templated strings for meta data managed by plugin (i.e. {{ record.name }} - {{ record.category }})
+ * - Dev tools console (like Winter.Debugbar) that shows SEO information for the current page
+ *     - Meta tags
+ *     - HTML Validation
+ *     - Previews (google, bing, facebook, twitter)
+ *     - Sitemap check
+ *     - accessibility and performance checks
+ *     - general checklist of SEO best practices
+ *     - content analysis (maybe integration with OpenAI API?)
  * - Support for Winter.Translate
  * - Automatic extension of Winter.Blog
  * - Recommended plugins: Winter.Sitemap, Winter.Pages, Winter.Blog, Winter.Redirect
