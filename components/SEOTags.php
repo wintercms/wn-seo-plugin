@@ -2,16 +2,16 @@
 
 namespace Winter\SEO\Components;
 
-use Url;
-use Lang;
-use Config;
 use Backend\Models\BrandSetting;
 use Cms\Classes\ComponentBase;
+use Config;
+use Lang;
 use Symfony\Component\Mime\MimeTypes;
 use System\Classes\ImageResizer;
 use System\Classes\MediaLibrary;
-use Winter\SEO\Classes\Meta;
+use Url;
 use Winter\SEO\Classes\Link;
+use Winter\SEO\Classes\Meta;
 
 class SEOTags extends ComponentBase
 {
@@ -24,14 +24,6 @@ class SEOTags extends ComponentBase
             'name'        => 'SEOTags Component',
             'description' => 'No description provided yet...'
         ];
-    }
-
-    /**
-     * Returns the properties provided by the component
-     */
-    public function defineProperties()
-    {
-        return [];
     }
 
     /**
@@ -130,7 +122,7 @@ class SEOTags extends ComponentBase
             // Ensure the image alt text is set
             if (empty(Meta::get('og:image:alt'))) {
                 Meta::set('og:image:alt', Lang::get('winter.seo::lang.meta.og:image:alt', [
-                    'title' => Meta::get('og:title') ?? '',
+                    'title' => Meta::get('og:title') ?? Meta::get('title') ?? $this->controller->getPage()['title'] ?? '',
                     'app_name' => BrandSetting::get('app_name'),
                 ]));
             }

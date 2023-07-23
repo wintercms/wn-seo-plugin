@@ -1,0 +1,5 @@
+fields:
+    nofollow:
+        label: winter.seo::lang.models.meta.fields.nofollow
+        type: switch
+        permissions: winter.seo.manage_meta
