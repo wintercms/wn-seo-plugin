@@ -149,9 +149,11 @@ class Plugin extends PluginBase
                     $widget->isNested
                     || (
                         method_exists($widget->model, 'isClassExtendedWith')
-                        && !$widget->model->isClassExtendedWith(SeoableModel::class)
+                        && (
+                            !$widget->model->isClassExtendedWith(SeoableModel::class)
+                            || !$widget->model->seoableInjectSeoFields
+                        )
                     )
-                    || !$widget->model->seoableInjectSeoFields
                 ) {
                     return;
                 }
