@@ -4,7 +4,20 @@ use Winter\SEO\Models\Settings;
 
 Event::listen('system.beforeRoute', function () {
     $txtResponse = function ($key) {
-        $contents = Settings::get($key);
+        $cacheKey = 'winter.seo::txt_response.' . $key;
+        $contents = '';
+
+        if (Config::get('app.debug')) {
+            Cache::forget($cacheKey);
+        }
+
+        $contents = Cache::rememberForever($cacheKey, function () use ($key) {
+            return Twig::parse(Settings::get($key), [
+                'app_url' => Config::get('app.url'),
+                'app_name' => Config::get('app.name'),
+                'app_debug' => Config::get('app.debug'),
+            ]);
+        });
 
         if (empty($contents)) {
             return Response::make((new \Cms\Classes\Controller())->run('404'), 404);
