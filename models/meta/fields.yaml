@@ -1,0 +1,26 @@
+fields:
+    _title:
+        label: winter.seo::lang.models.meta.label
+        type: section
+        comment: winter.seo::lang.models.meta.instructions
+        permissions: winter.seo.manage_meta
+    image:
+        label: winter.seo::lang.models.meta.fields.image
+        type: mediafinder
+        mode: image
+        span: left
+        permissions: winter.seo.manage_meta
+    title:
+        label: winter.seo::lang.models.meta.fields.title
+        span: right
+        permissions: winter.seo.manage_meta
+    description:
+        label: winter.seo::lang.models.meta.fields.description
+        span: right
+        type: textarea
+        size: tiny
+        permissions: winter.seo.manage_meta
+    nofollow:
+        label: winter.seo::lang.models.meta.fields.nofollow
+        type: switch
+        permissions: winter.seo.manage_meta
