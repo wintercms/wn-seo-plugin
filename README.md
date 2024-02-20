@@ -7,7 +7,7 @@ Future plans including support for easily generating structured data and automat
 ## Installation
 
 ```bash
-composer require wintercms/wn-seo-plugin
+composer require winter/wn-seo-plugin
 ```
 
 Then add the `[seoTags]` component to your `<head>` in your theme, ideally right after the standard encoding and responsiveness tags.
