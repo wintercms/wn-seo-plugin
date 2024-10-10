@@ -162,7 +162,7 @@ class Plugin extends PluginBase
                 $secondaryTabsFields = $widget->secondaryTabs['fields'] ?? [];
                 $location = (count($tabsFields) > count($secondaryTabsFields)) ? 'tabs' : 'secondaryTabs';
 
-                $seoForm = Yaml::parseFile(plugins_path('winter/seo/models/seodata/fields.yaml'));
+                $seoForm = Yaml::parseFile(plugins_path('winter/seo/models/meta/fields.yaml'));
                 $tab = 'winter.seo::lang.models.meta.label';
 
                 $prefix = $widget->model->seoableDataColumn . '[seo_data]';
