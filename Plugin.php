@@ -176,7 +176,7 @@ class Plugin extends PluginBase
                 $widget->{$location}['paneCssClass'][$tab] = 'padded-pane';
                 $widget->{$location}['icons'][$tab] = 'icon-magnifying-glass';
 
-                $widget->{$location}['fields'] = array_merge($widget->{$location}['fields'], $fields);
+                $widget->{$location}['fields'] = array_merge($widget->{$location}['fields'] ?? [], $fields);
             });
         }
     }
