@@ -1,0 +1,17 @@
+fields:
+    image:
+        label: winter.seo::lang.models.meta.fields.image
+        type: mediafinder
+        mode: image
+        span: left
+        permissions: winter.seo.manage_meta
+    title:
+        label: winter.seo::lang.models.meta.fields.title
+        span: right
+        permissions: winter.seo.manage_meta
+    description:
+        label: winter.seo::lang.models.meta.fields.description
+        span: right
+        type: textarea
+        size: tiny
+        permissions: winter.seo.manage_meta

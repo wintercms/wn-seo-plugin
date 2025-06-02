@@ -1,8 +1,10 @@
 <?php namespace Winter\SEO;
 
 use Backend\Models\UserRole;
+use Config;
 use Event;
 use System\Classes\PluginBase;
+use Winter\SEO\Behaviors\SeoableModel;
 use Winter\SEO\Classes\Link;
 use Winter\SEO\Classes\Meta;
 use Winter\SEO\Models\Settings;
@@ -12,13 +14,21 @@ use Config;
 /**
  * SEO Plugin Information File
  * @TODO:
- * - Support for robots.txt, humans.txt, and security.txt
+ * - Support for auto generating
  *     - humans.txt prepopulate from project composer.json?
  *     - Twig parsing in .txt file definitions
  *     - When adding support for twig parsing also add heavy caching by default for parsed results
- * - Support for Model Behavior that creates meta data in separate DB
+ * - Support for creating meta data in separate related model in the SeoableModel behavior
  *     - check for extended with in the form event listener
  *     - Support templated strings for meta data managed by plugin (i.e. {{ record.name }} - {{ record.category }})
+ * - Dev tools console (like Winter.Debugbar) that shows SEO information for the current page
+ *     - Meta tags
+ *     - HTML Validation
+ *     - Previews (google, bing, facebook, twitter)
+ *     - Sitemap check
+ *     - accessibility and performance checks
+ *     - general checklist of SEO best practices
+ *     - content analysis (maybe integration with OpenAI API?)
  * - Support for Winter.Translate
  * - Automatic extension of Winter.Blog
  * - Recommended plugins: Winter.Sitemap, Winter.Pages, Winter.Blog, Winter.Redirect
@@ -29,10 +39,7 @@ use Config;
  * - Rename "Meta" tab to "SEO" tab
  * - Character limit on description field
  * - Full support for common robots settings via meta tags and site wide defaults
- * - Default addition of generator meta tag in config file
  * - Support for "Social Media" quick connects (FB / Twitter IDs / accounts) (maybe just via global tags)
- * - Support for more sources of og:image (i.e. manual URL, fileupload, mediafinder, etc)
- * - Favicon, webmanifest, browserconfig, apple touch icons, etc
  * - Previews of FB / Twitter / Google
  * - Support for structured data
  * - Winter.Redirect
@@ -89,9 +96,91 @@ class Plugin extends PluginBase
      */
     public function boot(): void
     {
+        $this->registerSeoableModels();
+        $this->extendBackendForms();
+
         $this->extendPagesForms();
         $this->extendExternalPlugins();
         $this->populateGlobalTags();
+    }
+
+    /**
+     * Attaches the Seoable behavior to the configured models
+     */
+    protected function registerSeoableModels(): void
+    {
+        $modelsToTrack = Config::get('winter.seo::seoableModels', []);
+        foreach ($modelsToTrack as $class => $config) {
+            if (is_array($config)) {
+                $modelClass = $class;
+            } else {
+                $modelClass = $config;
+                $config = [];
+            }
+
+            if (!class_exists($modelClass)) {
+                continue;
+            }
+
+            $modelClass::extend(function ($model) use ($config) {
+                if (!empty($config['data_column'])) {
+                    $model->addDynamicProperty('seoableDataColumn', $config['data_column']);
+                }
+                if (isset($config['meta_from'])) {
+                    $model->addDynamicProperty('seoableMetaFrom', $config['meta_from']);
+                }
+                if (isset($config['link_from'])) {
+                    $model->addDynamicProperty('seoableLinkFrom', $config['link_from']);
+                }
+
+                $model->extendClassWith(SeoableModel::class);
+            });
+        }
+    }
+
+    /**
+     * Extends the backend forms to add the SEO tab to models
+     * implementing the SeoableModel behavior
+     */
+    protected function extendBackendForms(): void
+    {
+        if ($this->app->runningInBackend()) {
+            // Add the SEO fields to models implementing SeoableModel
+            Event::listen('backend.form.extendFieldsBefore', function (\Backend\Widgets\Form $widget) {
+                if (
+                    $widget->isNested
+                    || (
+                        !method_exists($widget->model, 'isClassExtendedWith')
+                        || (
+                            !$widget->model->isClassExtendedWith(SeoableModel::class)
+                            || !$widget->model->seoableInjectSeoFields
+                        )
+                    )
+                ) {
+                    return;
+                }
+
+                $tabsFields = $widget->tabs['fields'] ?? [];
+                $secondaryTabsFields = $widget->secondaryTabs['fields'] ?? [];
+                $location = (count($tabsFields) > count($secondaryTabsFields)) ? 'tabs' : 'secondaryTabs';
+
+                $seoForm = Yaml::parseFile(plugins_path('winter/seo/models/meta/fields.yaml'));
+                $tab = 'winter.seo::lang.models.meta.label';
+
+                $prefix = $widget->model->seoableDataColumn . '[seo_data]';
+
+                $fields = [];
+                foreach ($seoForm['fields'] as $name => $config) {
+                    $config['tab'] = $tab;
+                    $fields["{$prefix}[{$name}]"] = $config;
+                }
+
+                $widget->{$location}['paneCssClass'][$tab] = 'padded-pane';
+                $widget->{$location}['icons'][$tab] = 'icon-magnifying-glass';
+
+                $widget->{$location}['fields'] = array_merge($widget->{$location}['fields'] ?? [], $fields);
+            });
+        }
     }
 
     /**
@@ -132,7 +221,7 @@ class Plugin extends PluginBase
             unset($widget->tabs['fields']["{$prefix}title]"]);
             unset($widget->tabs['fields']["{$prefix}description]"]);
 
-            $form = Yaml::parseFile(plugins_path('winter/seo/models/meta/fields.yaml'));
+            $form = Yaml::parseFile(plugins_path('winter/seo/models/seodata/fields.halcyon.yaml'));
             $tab = 'winter.seo::lang.models.meta.label';
             $halcyonFields = [];
             foreach ($form['fields'] as $name => $config) {
@@ -181,6 +270,8 @@ class Plugin extends PluginBase
             }
         });
 
+        // Add the Winter CMS generator tag
+        Meta::set('generator', 'Winter CMS');
     }    
     
     /**

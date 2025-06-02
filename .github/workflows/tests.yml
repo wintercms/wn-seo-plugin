@@ -1,0 +1,29 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  phpUnitTests:
+    runs-on: ubuntu-latest
+    name: Unit Tests / PHP ${{ matrix.phpVersion }} / Winter develop
+    strategy:
+      max-parallel: 4
+      matrix:
+        phpVersion: ['8.1', '8.2', '8.3', '8.4']
+    steps:
+      - name: Setup Winter
+        uses: wintercms/setup-winter-action@v1
+        with:
+          php-version: ${{ matrix.phpVersion }}
+          plugin-author: winter
+          plugin-name: seo
+
+      - name: Run linting
+        run: ./vendor/bin/parallel-lint plugins/winter/seo
+
+      - name: Run unit tests (1.2/develop)
+        run: php artisan winter:test -p Winter.SEO

@@ -9,6 +9,7 @@ abstract class TagContainer
 {
     /**
      * Array of tag => value pairs keyed by the tag type class name.
+     * Value can be a string or an array of tag configuration properties
      */
     protected static array $tags = [];
 
@@ -19,11 +20,23 @@ abstract class TagContainer
     {
         if (is_array($name)) {
             foreach ($name as $tagName => $tagValue) {
+                if (is_array($tagValue)) {
+                    static::append($tagValue);
+                    continue;
+                }
                 static::set((string) $tagName, (string) $tagValue);
             }
         } else {
             static::$tags[static::class][$name] = $value;
         }
+    }
+
+    /**
+     * Append a tag configuration in array format
+     */
+    public static function append(array $tagConfig)
+    {
+        static::$tags[static::class][] = $tagConfig;
     }
 
     /**
