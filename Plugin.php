@@ -9,6 +9,7 @@ use Winter\SEO\Classes\Link;
 use Winter\SEO\Classes\Meta;
 use Winter\SEO\Models\Settings;
 use Yaml;
+use Config;
 
 /**
  * SEO Plugin Information File
@@ -99,6 +100,7 @@ class Plugin extends PluginBase
         $this->extendBackendForms();
 
         $this->extendPagesForms();
+        $this->extendExternalPlugins();
         $this->populateGlobalTags();
     }
 
@@ -270,6 +272,55 @@ class Plugin extends PluginBase
 
         // Add the Winter CMS generator tag
         Meta::set('generator', 'Winter CMS');
+    }    
+    
+    /**
+     * Extends external plugins with the SEO form fields
+     */
+    protected function extendExternalPlugins(): void
+    {
+        $modelsToAttach = Config::get('winter.seo::models_to_attach', []);
+
+        Event::listen('backend.form.extendFieldsBefore', function (\Backend\Widgets\Form $widget) use ($modelsToAttach) {
+            if($widget->isNested) return;
+            $model = $widget->model;
+            $modelClass = get_class($model);
+            $shouldExtend = isset($modelsToAttach[$modelClass]) 
+                            || in_array($modelClass, $modelsToAttach)
+                            || property_exists($model, 'metadata_from');
+            if(!$shouldExtend) return;
+
+            // Read config or fallback to default
+            if($model->metadata_from) {
+                $config = ['metadata_field' => $model->metadata_from];
+            } else {
+                $config = is_array($modelsToAttach[$modelClass] ?? null) ? $modelsToAttach[$modelClass] : [];
+            }
+            $config = array_merge(['metadata_field' => 'metadata'], $config);
+
+            // Reference to proper widget tabs container
+            if($widget->tabs || !$widget->secondaryTabs) {
+                $tabs = &$widget->tabs;
+            } else {
+                $tabs = &$widget->secondaryTabs;
+            }
+
+            // Model's metadata column can be set explicitly `public $metadata_from = 'column_name';`
+            $metadataField = $config['metadata_field'];
+
+            // TODO: not we gotta decide how to deal with the models that has no metadata field, pivot table?
+
+            $form = Yaml::parseFile(plugins_path('winter/seo/models/meta/fields.yaml'));
+            $tab = 'winter.seo::lang.models.meta.label';
+            $fields = [];
+            foreach ($form['fields'] as $name => $config) {
+              $config['tab'] = $tab;
+              $fields["{$metadataField}[seo][meta_{$name}]"] = $config;
+            }
+            $tabs['paneCssClass'][$tab] = 'padded-pane';
+            $tabs['icons'][$tab] = 'icon-magnifying-glass';
+            $tabs['fields'] = array_merge($tabs['fields'] ?? [], $fields);
+        });
     }
 
     /**
