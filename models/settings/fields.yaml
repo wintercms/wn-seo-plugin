@@ -4,12 +4,75 @@
 
 tabs:
     icons:
+        'Global': icon-globe
+        'Favicon': icon-image
         winter.seo::lang.models.meta.label_plural: icon-tag
         winter.seo::lang.models.link.label_plural: icon-link
         winter.seo::lang.models.settings.humans_txt: icon-user-group
         winter.seo::lang.models.settings.robots_txt: icon-robot
         winter.seo::lang.models.settings.security_txt: icon-lock
     fields:
+        global.enable_tags:
+            tab: 'Global'
+            label: 'Enable global meta tags (not overrides page settings)'
+            span: auto
+            type: switch
+            default: 0
+        global.minify_html:
+            tab: 'Global'
+            label: 'Minify HTML (whitespaces and comments will be removed)'
+            span: auto
+            type: switch
+            default: 0
+        global.app_name:
+            tab: 'Global'
+            label: 'App name'
+            span: auto
+            placeholder: ''
+            type: text
+            default: ''
+            comment: 'App name can be visible in the title meta tag'
+        global.separator:
+            tab: 'Global'
+            label: 'App name separator'
+            span: auto
+            placeholder: ''
+            type: text
+            default: '|'
+            comment: 'Sybmol to separate title from app name: {app name} {sepratator} {title}'
+        global.app_name_pos:
+            tab: 'Global'
+            label: 'Select how the app name should appear in the title'
+            options:
+                hide: 'Hide'
+                prefix: 'Prefix'
+                suffix: 'Suffix'
+            span: auto
+            type: balloon-selector
+        global.app_title:
+            tab: 'Global'
+            label: 'Default meta title'
+            size: tiny
+            span: full
+            placeholder: 'Meta description that is used for the page when one isn''t set already.'
+            type: text
+            comment: '[data-counter]'
+            attributes:
+                data-counter: 1
+                data-min: 50
+                data-max: 60
+        global.app_description:
+            tab: 'Global'
+            label: 'Default meta desciption'
+            size: tiny
+            span: full
+            placeholder: 'Meta description that is used for the page when one isn''t set already.'
+            type: textarea
+            comment: '[data-counter]'
+            attributes:
+                data-counter: 1
+                data-min: 100
+                data-max: 160
         meta_tags:
             tab: winter.seo::lang.models.meta.label_plural
             commentAbove: winter.seo::lang.models.meta.comment
@@ -50,16 +113,50 @@ tabs:
                         type: textarea
                         size: tiny
                         label: winter.seo::lang.models.link.description
+        favicon.enabled:
+            tab: 'Favicon'
+            label: 'Enable favicon'
+            span: full
+            type: switch
+            default: 1
+        app_favicon:
+            tab: 'Favicon'
+            label: 'Favicon'
+            comment: 'Shortcut icon of your website'
+            type: fileupload
+            mode: image
+            fileTypes: png,gif,svg,ico
+            useCaption: true
+            imageHeight: 32
+            imageWidth: 32
+        humans_txt.enabled:
+            tab: winter.seo::lang.models.settings.humans_txt
+            label: 'Enable humans.txt'
+            span: full
+            type: switch
+            default: 1
         humans_txt:
             tab: winter.seo::lang.models.settings.humans_txt
             commentAbove: winter.seo::lang.models.settings.humans_txt_comment
             type: textarea
             size: small
+        robots_txt.enabled:
+            tab: winter.seo::lang.models.settings.robots_txt
+            label: 'Enable robots.txt'
+            span: full
+            type: switch
+            default: 1
         robots_txt:
             tab: winter.seo::lang.models.settings.robots_txt
             commentAbove: winter.seo::lang.models.settings.robots_txt_comment
             type: textarea
             size: small
+        security_txt.enabled:
+            tab: winter.seo::lang.models.settings.security_txt
+            label: 'Enable security.txt'
+            span: full
+            type: switch
+            default: 1
         security_txt:
             tab: winter.seo::lang.models.settings.security_txt
             commentAbove: winter.seo::lang.models.settings.security_txt_comment
