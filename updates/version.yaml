@@ -1,3 +1,4 @@
 '1.0.0': 'First version of SEO'
 '1.0.1': 'Fixed issue where injecting fields into Seoable models would fail'
 '1.0.2': 'Fixed support for making ThemeData Seoable'
+'1.0.3': 'Fixed saving & rendering of global link / meta tags'
