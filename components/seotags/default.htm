@@ -1,9 +1,10 @@
 {# <meta> tags #}
 {% for tagName, tagContent in __SELF__.getMetaTags() %}
+    {# TODO: print title tag if not exists in page layout #}
     {% if tagContent is iterable %}
         <meta{% for attrName, attrValue in tagContent %} {{ attrName }}="{{ attrValue }}"{% endfor %}>
     {% else %}
-        <meta name="{{ tagName }}" content="{{ tagContent }}">
+        <meta name="{{ tagName }}" property="{{ tagName }}" content="{{ tagContent }}">
     {% endif %}
 {% endfor %}
 

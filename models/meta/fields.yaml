@@ -14,12 +14,22 @@ fields:
         label: winter.seo::lang.models.meta.fields.title
         span: right
         permissions: winter.seo.manage_meta
+        comment: '[data-counter]'
+        attributes:
+            data-counter: 1
+            data-min: 50
+            data-max: 60
     description:
         label: winter.seo::lang.models.meta.fields.description
         span: right
         type: textarea
         size: tiny
         permissions: winter.seo.manage_meta
+        comment: '[data-counter]'
+        attributes:
+            data-counter: 1
+            data-min: 100
+            data-max: 160
     nofollow:
         label: winter.seo::lang.models.meta.fields.nofollow
         type: switch

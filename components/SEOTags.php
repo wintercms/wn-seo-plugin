@@ -12,6 +12,7 @@ use System\Classes\MediaLibrary;
 use Url;
 use Winter\SEO\Classes\Link;
 use Winter\SEO\Classes\Meta;
+use Winter\SEO\Models\Settings;
 
 class SEOTags extends ComponentBase
 {
@@ -21,18 +22,58 @@ class SEOTags extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'SEOTags Component',
-            'description' => 'No description provided yet...'
+            'name'        => 'SEOTags',
+            'description' => 'Outputs meta tags to the page'
         ];
     }
 
     /**
      * Processes the meta tags for CMS pages and Winter.Pages static pages
      */
-    protected function processPageMeta()
+    protected function processPageMeta(object $page = null)
     {
         // $this['page_title'] = $this->page->title ?? Meta::get('og:title') ?? '';
         // $this['app_name'] = BrandSetting::get('app_name');
+
+        // Store page settings in order to substitute with model settings if needed
+        if (!$page) {
+            $page = $this->page;
+        }
+
+        // Handle global settings
+        if (Settings::getOrDefault('global.enable_tags')) {
+            $name = Settings::getOrDefault('global.app_name');
+            $position = Settings::getOrDefault('global.app_name_pos');
+            $separator = Settings::getOrDefault('global.separator');
+
+            // Substitute empty title by global setting
+            if(empty(trim($page->meta_title))) {
+                $page->meta_title = Settings::getOrDefault('global.app_title');
+            }
+
+            // Substitute empty description by global setting
+            if(empty(trim($page->meta_description))) {
+                $page->meta_description = Settings::getOrDefault('global.app_description');
+            }
+
+            if(empty($name)) {
+              // Skip or do something about that?  
+            } else if($position === 'prefix') {
+              $page->meta_title = "{$name} {$separator} {$page->meta_title}";
+            } elseif($position === 'suffix') {
+              $page->meta_title = "{$page->meta_title} {$separator} {$name}";
+            }
+        }
+
+        // Set the page title 
+        if (!empty($page->meta_title) && empty(trim(Meta::get('title')))) {
+          Meta::set('title', $page->meta_title);
+        }
+
+        // Set the page description 
+        if (!empty($page->meta_description) && empty(trim(Meta::get('description')))) {
+          Meta::set('description', $page->meta_description);
+        }
 
         // Set the cannonical URL
         if (empty(Link::get('canonical'))) {
@@ -40,12 +81,12 @@ class SEOTags extends ComponentBase
         }
 
         // Parse the meta_image as a media library image
-        if (!empty($this->page->meta_image)) {
-            $this->page->meta_image = MediaLibrary::url($this->page->meta_image);
+        if (!empty($page->meta_image)) {
+            $page->meta_image = MediaLibrary::url($page->meta_image);
         }
 
         // Handle the nofollow meta property being set
-        if (!empty($this->page->meta_nofollow)) {
+        if (!empty($page->meta_nofollow)) {
             Link::set('robots', 'nofollow');
         }
 
@@ -61,6 +102,7 @@ class SEOTags extends ComponentBase
                 'next' => 'paginateNext',
             ],
         ];
+
         foreach ($metaMap as $class => $map) {
             foreach ($map as $name => $pageProp) {
                 if (
@@ -171,8 +213,40 @@ class SEOTags extends ComponentBase
         }
     }
 
+    /**
+     * Processes the icon link tag if favicon enabled
+     */
+    protected function processFavicon(): void 
+    {
+      if(Settings::getOrDefault('favicon.enabled') && Settings::instance()->app_favicon) {
+        Link::set('icon', '/favicon.ico');
+      }
+    }
+
+    /**
+     * Processes external model's metadata by calling it from controller
+     */
+    public function useMetadataModel(\Model $model): void 
+    {
+      // Im not sure about try/catch, but just logging seems to be not bad option 
+      try {
+        $metadataField = strlen(trim($model->metadata_from)) ? $model->metadata_from : 'metadata';
+        $metadata = $model->{$metadataField};
+        if(!is_array($metadata)) {
+          $metadata = json_decode($metadata, true);
+        }
+        if(!isset($metadata['seo']) || empty($metadata['seo'])) {
+          return;
+        }
+        $this->processPageMeta((object)$metadata['seo']);
+      } catch(Exception $e) {
+        Log::error($e->getMessage());
+      }
+    }
+
     public function getMetaTags(): array
     {
+        $this->processFavicon();
         $this->processPageMeta();
         $this->processOgImage();
         $this->processDescription();
