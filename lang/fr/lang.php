@@ -41,6 +41,8 @@ return [
             'robots_txt_comment' => 'Contenu du fichier de configuration /robots.txt utilisé par les robots d\'indexation.',
             'security_txt' => 'Politique de sécurité',
             'security_txt_comment' => 'Contenu de la politique de sécurité du site, voir https://securitytxt.org/',
+            'llms_txt' => 'LLMs.txt',
+            'llms_txt_comment' => 'Contenu du fichier /llms.txt utilisé pour fournir des informations aux systèmes d\'IA et aux LLM sur le site. Voir https://llmstxt.org/',
         ],
     ],
     'permissions' => [

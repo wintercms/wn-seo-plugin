@@ -30,4 +30,5 @@ Event::listen('system.beforeRoute', function () {
     Route::get('/robots.txt', fn() => $txtResponse('robots_txt'));
     Route::get('/security.txt', fn() => $txtResponse('security_txt'));
     Route::get('/.well-known/security.txt', fn() => $txtResponse('security_txt'));
+    Route::get('/llms.txt', fn() => $txtResponse('llms_txt'));
 });

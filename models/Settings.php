@@ -51,5 +51,6 @@ class Settings extends Model
         $this->humans_txt = $contentsFromConfig('humans_txt');
         $this->robots_txt = $contentsFromConfig('robots_txt');
         $this->security_txt = $contentsFromConfig('security_txt');
+        $this->llms_txt = $contentsFromConfig('llms_txt');
     }
 }
