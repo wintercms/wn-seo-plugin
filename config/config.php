@@ -51,6 +51,10 @@ return [
         'path' => $resolvePath('security.txt'),
     ],
 
+    'llms_txt' => [
+        'path' => $resolvePath('llms.txt'),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Automatically add the SEO fields to SeoableModel forms

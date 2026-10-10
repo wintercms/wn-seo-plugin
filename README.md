@@ -154,3 +154,11 @@ Link::all()
 // Clear all previously set link tags and start fresh from this point on in the request
 Link::refresh();
 ```
+
+### LLMs.txt
+
+The plugin can serve a `/llms.txt` file at the root of your site, providing LLM-friendly
+information about the project, following the [llmstxt.org](https://llmstxt.org/) specification.
+
+The contents are configured in the plugin's settings under the **LLMs.txt** tab, or can be
+provided as a `llms.txt` file at the root of the project. The backend settings take priority.

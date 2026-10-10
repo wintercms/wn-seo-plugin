@@ -41,6 +41,8 @@ return [
             'robots_txt_comment' => 'The contents of the /robots.txt configuration file used by web crawlers',
             'security_txt' => 'Security Policy',
             'security_txt_comment' => 'The contents of the security policy for the site, see https://securitytxt.org/',
+            'llms_txt' => 'LLMs.txt',
+            'llms_txt_comment' => 'The contents of the /llms.txt file used to provide information to AI systems and LLMs about the site. See https://llmstxt.org/',
         ],
     ],
     'permissions' => [

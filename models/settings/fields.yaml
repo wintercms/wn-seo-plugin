@@ -9,6 +9,7 @@ tabs:
         winter.seo::lang.models.settings.humans_txt: icon-user-group
         winter.seo::lang.models.settings.robots_txt: icon-robot
         winter.seo::lang.models.settings.security_txt: icon-lock
+        winter.seo::lang.models.settings.llms_txt: icon-file-lines
     fields:
         meta_tags:
             tab: winter.seo::lang.models.meta.label_plural
@@ -63,5 +64,10 @@ tabs:
         security_txt:
             tab: winter.seo::lang.models.settings.security_txt
             commentAbove: winter.seo::lang.models.settings.security_txt_comment
+            type: textarea
+            size: small
+        llms_txt:
+            tab: winter.seo::lang.models.settings.llms_txt
+            commentAbove: winter.seo::lang.models.settings.llms_txt_comment
             type: textarea
             size: small
