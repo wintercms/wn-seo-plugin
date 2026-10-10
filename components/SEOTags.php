@@ -46,7 +46,8 @@ class SEOTags extends ComponentBase
 
         // Handle the nofollow meta property being set
         if (!empty($this->page->meta_nofollow)) {
-            Link::set('robots', 'nofollow');
+            $robots = Link::get('robots');
+            Link::set('robots', $robots ? trim($robots . ', nofollow') : 'nofollow');
         }
 
         // Set the meta tags based on the current page if not set
