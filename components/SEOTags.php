@@ -81,6 +81,8 @@ class SEOTags extends ComponentBase
         $image = Meta::get('og:image') ?? Config::get('winter.seo::default_social_image', null);
 
         if ($image) {
+            $imageUrl = $image;
+
             // Tell Twitter to display as a summary card with an image if we have an image defined
             if (empty(Meta::get('twitter:card'))) {
                 Meta::set('twitter:card', 'summary_large_image');
